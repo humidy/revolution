@@ -422,6 +422,7 @@ class GetGateInfo:
 
 
 if __name__ == "__main__":
+    # 示例测试
     # g1 = AndGate('g1')
     # g2 = OrGate('g2')
     # g3 = XorGate('g3')
