@@ -45,33 +45,38 @@ class LogicGate:
 
 
 # 检查输入值的有效性，输入值为数值，且取值为0或1
-def check_input_format(input_name=None, gate=LogicGate(None)):
+class CheckGate:
     """
-    :param input_name: 输入端的名称，对于输入>1的，有几个输入就会有几个输入名（用单个大写字母表示），对于输入=1的默认名字为None
-    :param gate:
-    :return:
+    检查门的有效性类，包含一些静态方法，当函数来使用
     """
-    try:
-        # 判断输入的类型
-        if input_name:
-            input_value = int(input("[正常]：逻辑门[{}]的输入_{}："
-                                    .format(gate.label, input_name)))
-        else:
-            input_value = int(input("[正常]：逻辑门[{}]的输入："
-                                    .format(gate.label)))
-    # 输入值转换错误
-    except ValueError:
-        print("[错误]：类型错误，输入类型不合法,输入类型为数值型且数值为0或1")
+    @staticmethod
+    def check_input_format(input_name=None, gate=LogicGate(None)):
+        """
+        :param input_name: 输入端的名称，对于输入>1的，有几个输入就会有几个输入名（用单个大写字母表示），对于输入=1的默认名字为None
+        :param gate:
+        :return:
+        """
+        try:
+            # 判断输入的类型
+            if input_name:
+                input_value = int(input("[正常]：逻辑门[{}]的输入_{}："
+                                        .format(gate.label, input_name)))
+            else:
+                input_value = int(input("[正常]：逻辑门[{}]的输入："
+                                        .format(gate.label)))
+        # 输入值转换错误
+        except ValueError:
+            print("[错误]：类型错误，输入类型不合法,输入类型为数值型且数值为0或1")
+            sys.exit()
+        # 其它未知错误
+        except Exception as err:
+            print("[错误]：出现未知错误，错误原因{}".format(err))
+            sys.exit()
+        # 判断输入的值
+        if input_value in (0, 1):
+            return input_value
+        print("[错误]：值错误，输入值不合法，输入值为0或1")
         sys.exit()
-    # 其它未知错误
-    except Exception as err:
-        print("[错误]：出现未知错误，错误原因{}".format(err))
-        sys.exit()
-    # 判断输入的值
-    if input_value in (0, 1):
-        return input_value
-    print("[错误]：值错误，输入值不合法，输入值为0或1")
-    sys.exit()
 
 
 # 定义含有两个输入的逻辑门
@@ -94,7 +99,7 @@ class BinaryGate(LogicGate):
         :return:判断输入值一是否为空（有值），如果为空则可以赋值
         """
         if self.input_1_value is None:
-            self.input_1_value = check_input_format(self.input_1_name, self)
+            self.input_1_value = CheckGate.check_input_format(self.input_1_name, self)
         else:
             print("[异常]：无法输入，逻辑门[{}]的输入[{}]已有值，值为[{}]"
                   .format(self.label, self.input_1_name, self.input_1_value))
@@ -105,7 +110,7 @@ class BinaryGate(LogicGate):
         :return:
         """
         if self.input_2_value is None:
-            self.input_2_value = check_input_format(self.input_2_name, self)
+            self.input_2_value = CheckGate.check_input_format(self.input_2_name, self)
         else:
             print("[异常]：无法输入，逻辑门[{}]的输入[{}]已有值，值为[{}]"
                   .format(self.label, self.input_2_name, self.input_2_value))
@@ -156,7 +161,7 @@ class UnaryGate(LogicGate):
         :return:
         """
         if self.input_value is None:
-            self.input_value = check_input_format(self.input_name, self)
+            self.input_value = CheckGate.check_input_format(self.input_name, self)
         else:
             print("[异常]：无法输入，逻辑门[{}]的输入已有值，值为[{}]"
                   .format(self.label, self.input_value))
